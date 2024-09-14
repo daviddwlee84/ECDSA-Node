@@ -37,6 +37,10 @@ _Hint_
 
 ### Example Accounts
 
+```bash
+docker compose up --build
+```
+
 ```json
 {
   "0x1": {
