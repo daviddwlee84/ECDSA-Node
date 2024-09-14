@@ -8,6 +8,11 @@ function App() {
   const [balance, setBalance] = useState(0);
   const [address, setAddress] = useState("");
   const [privateKey, setPrivateKey] = useState("");
+  const [refreshBalances, setRefreshBalances] = useState(false); // New state to trigger balances refresh
+  // Function to toggle refresh state
+  const triggerRefreshBalances = () => {
+    setRefreshBalances((prev) => !prev); // Toggling state to trigger useEffect in Balances component
+  };
 
   return (
     <div className="app">
@@ -19,9 +24,9 @@ function App() {
         address={address}
         setAddress={setAddress}
       />
-      <Transfer setBalance={setBalance} privateKey={privateKey} />
+      <Transfer setBalance={setBalance} privateKey={privateKey} onTransfer={triggerRefreshBalances} />
       <div className="balances-wrapper">
-        <Balances />
+        <Balances refreshBalances={refreshBalances} />
       </div>
     </div>
   );

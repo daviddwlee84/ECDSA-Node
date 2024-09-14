@@ -1,13 +1,14 @@
 import { useState } from "react";
 import server from "./server";
-import { toHex, utf8ToBytes, hashTransaction, signTransactionHash } from "./utils";
+import { toHex, hashTransaction, signTransactionHash } from "./utils";
 
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#use_within_json
+// Trick to make JSON.stringify works on BigInt object (Signature)
 BigInt.prototype.toJSON = function () {
   return { $bigint: this.toString() };
 };
 
-function Transfer({ setBalance, privateKey }) {
+function Transfer({ setBalance, privateKey, onTransfer }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
 
@@ -17,8 +18,7 @@ function Transfer({ setBalance, privateKey }) {
 
   if (privateKey) {
     signature = signTransactionHash(txHash, privateKey);
-  }
-  else {
+  } else {
     signature = undefined;
   }
 
@@ -34,6 +34,7 @@ function Transfer({ setBalance, privateKey }) {
         recipient,
       });
       setBalance(balance);
+      onTransfer(); // Trigger balance refresh
     } catch (ex) {
       console.log(ex);
       alert(ex.response.data.message);
@@ -70,7 +71,6 @@ function Transfer({ setBalance, privateKey }) {
         value="Transfer"
         disabled={signature === undefined}
       />
-
     </form>
   );
 }

@@ -35,6 +35,28 @@ _Hint_
 - Use registry mirror `npm install --registry=https://registry.npmmirror.com` to prevent from network error (e.g. `MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added to [TLSSocket]. Use emitter.setMaxListeners() to increase limit`) behind the GFW.
 - Front-end bug logs should be checked in the browser developer tool
 
+### Example Accounts
+
+```json
+{
+  "0x1": {
+    "private": "b8462aae154aeb08c18d2b537cf753d2154c1721974f4d3cb36f259d26e8d2f6",
+    "public": "02916fc7dc319e56ce870a8f0c9b8ab51be018cbfa0436c05c0f01c140b284acd7",
+    "addr": "0x1"
+  },
+  "0x2": {
+    "private": "ec27b7cf567f36b8272d6679406dc58957fe98de0dc9b9017c8a12981f5ba62e",
+    "public": "02ed2eaaa3ac61156584371a58c71932e8439af3aadf1aba769c0293a592620063",
+    "addr": "0x2"
+  },
+  "0x3": {
+    "private": "ca50f1b3efa32f6c4766b7eb926742ae9f0156f91f0ff39103e1f414d7860878",
+    "public": "026ce1de68f287d6898c06dfc565ad546f4dc2c89ad20f5cd64922dd83a3154f87",
+    "addr": "0x3"
+  }
+}
+```
+
 ---
 
 - [ethereum/js-ethereum-cryptography: Every cryptographic primitive needed to work on Ethereum, for the browser and Node.js](https://github.com/ethereum/js-ethereum-cryptography)
