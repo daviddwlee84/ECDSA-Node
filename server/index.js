@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const port = 3042;
+const { verifyTransaction } = require('./utils/key')
 
 app.use(cors());
 app.use(express.json());
@@ -36,6 +37,7 @@ const balances = {
 app.get("/balance/:address", (req, res) => {
   const { address } = req.params;
   const balance = balances[address] || 0;
+  // console.log(address, balance);  // debug
   res.send({ balance });
 });
 
@@ -43,14 +45,31 @@ app.get("/balances", (req, res) => {
   res.send({ balances });
 });
 
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#use_within_json
+const reviver = (key, value) =>
+  value !== null &&
+    typeof value === "object" &&
+    "$bigint" in value &&
+    typeof value.$bigint === "string"
+    ? BigInt(value.$bigint)
+    : value;
+
+
 app.post("/send", (req, res) => {
-  // TODO: get a signature form the client-side application
+  // get a signature form the client-side application
   // recover the public address from the signature
 
-  const { sender, recipient, amount } = req.body;
-
+  const { signature, recipient, amount } = req.body;
+  const parsedSignature = JSON.parse(signature, reviver);
+  const [isSigned, sender] = verifyTransaction(parsedSignature, amount, recipient);
+  if (!sender) {
+    res.status(400).send({ message: f`The wallet address are not provided.` });
+  }
   setInitialBalance(sender);
   setInitialBalance(recipient);
+  if (!isSigned) {
+    res.status(400).send({ message: f`You are not the owner of the ${sender}` });
+  }
 
   if (balances[sender] < amount) {
     res.status(400).send({ message: "Not enough funds!" });
