@@ -33,6 +33,7 @@ _Hint_
 
 - Use [nodemon](https://www.npmjs.com/package/nodemon) instead of `node` to automatically restart the server on any changes.
 - Use registry mirror `npm install --registry=https://registry.npmmirror.com` to prevent from network error (e.g. `MaxListenersExceededWarning: Possible EventEmitter memory leak detected. 11 close listeners added to [TLSSocket]. Use emitter.setMaxListeners() to increase limit`) behind the GFW.
+- Front-end bug logs should be checked in the browser developer tool
 
 ---
 
@@ -45,3 +46,8 @@ _Hint_
 
 - Private Key
 - Signature
+
+---
+
+- [Debug Node.js Apps using Visual Studio Code](https://code.visualstudio.com/docs/nodejs/nodejs-debugging)
+- [Node.js — Debugging Node.js](https://nodejs.org/en/learn/getting-started/debugging)
