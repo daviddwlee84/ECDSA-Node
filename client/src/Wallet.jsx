@@ -19,7 +19,13 @@ function Wallet({ address, setAddress, balance, setBalance, privateKey, setPriva
   async function onChangePrivateKey(evt) {
     const privateKey = evt.target.value;
     setPrivateKey(privateKey);
-    address = utils.getHexAddressFromPublicKey(utils.getPublicKeyFromPrivateKey(privateKey))
+    const publicKey = utils.getPublicKeyFromPrivateKey(privateKey);
+    if (publicKey === undefined) {
+      address = "";
+    }
+    else {
+      address = utils.getHexAddressFromPublicKey(publicKey);
+    }
     setAddress(address);
     if (address) {
       const {
