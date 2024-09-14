@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import server from "./server";
 
 function Balances() {
+  // TODO: this should be passed so we will refresh balances when any transfer occurred
   const [balances, setBalances] = useState({});
 
   // Fetch data from the server when the component mounts

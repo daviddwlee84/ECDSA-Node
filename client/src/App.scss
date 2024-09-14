@@ -47,6 +47,30 @@ input {
   background-color: #fdfdfe;
   padding-inline-start: 0.75rem;
   font-size: 0.875rem;
+
+  &.disabled {
+    background-color: #cbd5e0;
+    /* Disabled button color */
+    cursor: not-allowed;
+    /* No pointer cursor for disabled buttons */
+    opacity: 0.6;
+    /* Make it look "disabled" visually */
+  }
+
+  &.disabled:hover::after {
+    content: 'Private key is missing';
+    position: absolute;
+    background-color: #f56565;
+    /* Tooltip background */
+    color: white;
+    padding: 5px 10px;
+    border-radius: 0.25rem;
+    font-size: 0.75em;
+    top: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
 }
 
 .button {
@@ -63,6 +87,7 @@ input {
   &:hover {
     cursor: pointer;
   }
+
 }
 
 .wallet {

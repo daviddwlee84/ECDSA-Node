@@ -1,11 +1,26 @@
 import { useState } from "react";
 import server from "./server";
+import { toHex, utf8ToBytes, hashTransaction, signTransactionHash } from "./utils";
 
-function Transfer({ address, setBalance }) {
+// https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt#use_within_json
+BigInt.prototype.toJSON = function () {
+  return { $bigint: this.toString() };
+};
+
+function Transfer({ setBalance, privateKey }) {
   const [sendAmount, setSendAmount] = useState("");
   const [recipient, setRecipient] = useState("");
 
   const setValue = (setter) => (evt) => setter(evt.target.value);
+  const txHash = hashTransaction(sendAmount, recipient);
+  let signature = undefined;
+
+  if (privateKey) {
+    signature = signTransactionHash(txHash, privateKey);
+  }
+  else {
+    signature = undefined;
+  }
 
   async function transfer(evt) {
     evt.preventDefault();
@@ -14,12 +29,13 @@ function Transfer({ address, setBalance }) {
       const {
         data: { balance },
       } = await server.post(`send`, {
-        sender: address,
+        signature: signature === undefined ? "" : JSON.stringify(signature),
         amount: parseInt(sendAmount),
         recipient,
       });
       setBalance(balance);
     } catch (ex) {
+      console.log(ex);
       alert(ex.response.data.message);
     }
   }
@@ -46,7 +62,15 @@ function Transfer({ address, setBalance }) {
         ></input>
       </label>
 
-      <input type="submit" className="button" value="Transfer" />
+      <label>Transaction Hash: {toHex(txHash)}</label>
+
+      <input
+        type="submit"
+        className={`button ${(signature === undefined || !recipient || !sendAmount || parseInt(sendAmount) <= 0) ? 'disabled' : ''}`}
+        value="Transfer"
+        disabled={signature === undefined}
+      />
+
     </form>
   );
 }
